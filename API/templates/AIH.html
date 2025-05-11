@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIH</title>
+  <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom, #7cb1ff88 0%, #ffffff 50%, #7cb1ff88 100%);
+      font-family: 'Minecraft', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-image: radial-gradient(circle, rgb(73, 72, 72) 1px, transparent 1.5px);
+      background-size: 20px 20px;
+    }
+
+    h1 {
+      margin: 20px;
+      font-size: 2.5rem;
+      color: #2d2d2d;
+      text-shadow: 2px 2px #f5f5f5;
+    }
+
+    .container {
+      background: rgb(80, 50, 50);
+      padding: 12px;
+      margin-bottom: 18px;
+      border: 6px solid #3c943f;
+      
+    }
+
+    video {
+      width: 90vw;
+      max-width: 640px;
+
+      transform: rotateY(180deg);
+      
+    }
+
+    canvas {
+      display: none;
+    }
+
+    .info {
+      min-width: 200px;
+      text-align: left;
+      display: inline-block;
+      margin: 5px;
+      font-size: 1.6rem;
+      font-weight: 200;
+      text-shadow: 2px 2px #f5f5f5;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>AM I HUMAN?</h1>
+  <div class="container">
+    <video id="webcam" autoplay playsinline></video>
+    <canvas id="snapshot"></canvas>
+   
+  </div>
+   <h3 id="human" class="info" >Human : Unknown</h3>
+    <h3 id="age" class="info">Age : Unknown</h3>
+    <h3 id="gender" class="info">Gender : Unknown</h3>
+    <h3 id="real" class="info">Real : Unknown</h3>
+
+  <script>
+    const video = document.getElementById('webcam');
+    const canvas = document.getElementById('snapshot');
+    const ctx = canvas.getContext('2d');
+
+    async function startWebcam() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+      } catch (err) {
+        alert('Unable to access webcam.');
+        console.error(err);
+      }
+    }
+
+    function sendSnapshot() {
+      if (video.videoWidth === 0) return;
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob(blob => {
+        const formData = new FormData();
+        formData.append('file', blob); 
+
+        fetch('/images',{
+          method: 'POST',
+          body: formData  
+        })
+        .then(response => response.json())
+.then(data => {
+  document.getElementById('human').textContent = `Human : ${data.human ?? 'Unknown'}`;
+  document.getElementById('age').textContent = `Age : ${data.age ?? 'Unknown'}`;
+  document.getElementById('gender').textContent = `Gender : ${data.gender ?? 'Unknown'}`;
+  document.getElementById('real').textContent = `Real : ${data.real ?? 'Unknown'}`;
+})
+.catch(error => console.error('Error:', error));
+
+
+      });
+    }
+
+    startWebcam();
+    setInterval(sendSnapshot, 2000);
+  </script>
+</body>
+
+</html>

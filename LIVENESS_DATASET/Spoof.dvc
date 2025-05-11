@@ -1,0 +1,6 @@
+outs:
+- md5: a6ca118a8391ca72de80e435d224bf83.dir
+  size: 22399659
+  nfiles: 300
+  hash: md5
+  path: Spoof

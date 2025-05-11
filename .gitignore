@@ -1,0 +1,12 @@
+.env/
+container/
+.ipynb_checkpoints/
+.jupyter 
+
+/AGE_DATASET/Train 
+/GENDER_DATASET/Training 
+/GENDER_DATASET/Validation 
+
+/LIVENESS_DATASET/Live 
+/LIVENESS_DATASET/Spoof
+.dvcignore
