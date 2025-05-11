@@ -36,9 +36,9 @@
 
 ## 🎉 **Fun Features**
 
-* **Human Detection**: The AI will tell you if you're human or just pretending to be one!
+* **Human Detection**: Models that will tell you if you're human or just pretending to be one!
 * **Age & Gender Prediction**: Get an estimate of your age and gender based on the image you provide.
-* **Spoof Detection**: Using the techniques to detect spoof faces or avatars.
+* **Spoof Detection**: techniques to detect spoof faces or avatars.
 * **Interactive UI**: Dynamic, fun, and interactive web interface built with Jinja templates.
 
 ---
@@ -131,7 +131,6 @@ Since this is a solo project, contributions are welcome but not expected. Howeve
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
 
 ### **Note:**
 
