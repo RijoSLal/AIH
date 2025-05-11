@@ -8,3 +8,5 @@ opencv-python
 numpy 
 mlflow
 dagshub
+huggingface_hub
+ultralytics
