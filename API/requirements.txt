@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pydantic
+python-multipart
+jinja2 
+tensorflow
+opencv-python
+numpy 
+mlflow
+dagshub
+huggingface_hub
+ultralytics
