@@ -140,10 +140,3 @@ def image_preprocessing(img: np.ndarray) -> tf.Tensor:
     img_ready = preprocess_input(img_ready_exp)  
     return img_ready
 
-if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",      
-        host="0.0.0.0",   
-        port=8000,
-        reload=True       
-    )
