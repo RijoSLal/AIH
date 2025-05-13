@@ -48,7 +48,7 @@
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/your-username/AIH.git
+git clone https://github.com/RijoSLal/AIH.git
 cd AIH
 ```
 
