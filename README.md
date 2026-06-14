@@ -111,29 +111,13 @@ Don’t forget to update the Dagshub remote URL in .dvc/config and .mlflow track
 dvc remote modify origin url https://dagshub.com/your-username/your-repo-name.git
 ```
 
-## 🚀 **Deploying the Model**
-
-1. **Run the FastAPI Server**: Once the model is registered, the server can be started using **Uvicorn** to serve the application.
-
-   ```bash
-   uvicorn main:app --reload
-   ```
-
-2. **Access the API**: Open your browser and go to `http://127.0.0.1:8000/` to interact with the fun human-detection tool.
-
----
-
 ## 🧪 **Contributing**
 
 Since this is a solo project, contributions are welcome but not expected. However, if you think of any fun ideas, bug fixes, or improvements, feel free to fork the repo and submit a pull request!
 
----
-
 ## 📜 **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
 
 ### **Note:**
 
