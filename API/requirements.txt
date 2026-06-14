@@ -1,6 +1,5 @@
 fastapi
 uvicorn
-pydantic
 python-multipart
 jinja2 
 tensorflow

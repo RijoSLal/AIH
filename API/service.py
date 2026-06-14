@@ -3,7 +3,8 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 from fastapi import FastAPI,Request,Response,UploadFile,File
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
-import numpy as np
+import numpy as np 
+#import uvicorn
 import cv2
 from ultralytics import YOLO 
 from huggingface_hub import hf_hub_download
@@ -12,6 +13,7 @@ from tensorflow.keras.applications.mobilenet_v3 import preprocess_input # type: 
 from tensorflow.keras.preprocessing import image  # type: ignore
 from mlflow_models import Server_models
 import tensorflow as tf
+
 
 app = FastAPI()
 
@@ -32,7 +34,7 @@ live_model = models.model_retriever("live_model",1)
 
 AGE = ["MIDDLE","OLD","YOUNG"]
 GENDER = ["FEMALE","MALE"]
-LIVE = ["LIVE","SPOOF"]
+LIVE = ["SPOOF","LIVE"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -97,7 +99,8 @@ def detect_and_crop_face(image: np.ndarray) -> JSONResponse:
                       predicted values (placeholders shown here) for age, gender, and liveness.
     """
     if image is None:
-        raise ValueError("Failed to load the image. Please ensure the file is a valid image format.")
+        # raise ValueError("Failed to load the image. Please ensure the file is a valid image format.")
+        return JSONResponse(content={"human":"no"})
     
     results = yolo.predict(image)
 
@@ -108,19 +111,24 @@ def detect_and_crop_face(image: np.ndarray) -> JSONResponse:
                 x1, y1, x2, y2 = map(int, box.xyxy[0])
                 cropped_face = image[y1:y2, x1:x2]
                 image=image_preprocessing(cropped_face)
-                age_pred = np.argmax(age_model.predict(image))
-                gender_prob = tf.math.sigmoid(gender_model.predict(image)[0][0])
-                gender_pred = int(gender_prob > 0.5)
-                live_prob = tf.math.sigmoid(live_model.predict(image)[0][0])
-                live_pred = int(live_prob > 0.5)
-             
-                return JSONResponse(content=
+    try:
+                
+        # image=image_preprocessing(image)
+        # age_pred = np.argmax(age_model.predict(image))
+        age_pred = np.argmax(age_model.predict(image))
+        gender_prob = tf.math.sigmoid(gender_model.predict(image)[0][0])
+        gender_pred = int(gender_prob > 0.5)
+        live_prob = tf.math.sigmoid(live_model.predict(image)[0][0])
+        live_pred = int(live_prob > 0.5)
+        
+        return JSONResponse(content=
                                 {"human":"YES",
                                  "age": AGE[age_pred], 
                                  "gender":GENDER[gender_pred],
-                                 "real":LIVE[live_pred]})
+                                 "real":LIVE[live_pred]}) 
+    except:
           
-    return JSONResponse(content={"human":"no"}) 
+          return JSONResponse(content={"human":"no"}) 
 
 
 def image_preprocessing(img: np.ndarray) -> tf.Tensor:
@@ -138,4 +146,14 @@ def image_preprocessing(img: np.ndarray) -> tf.Tensor:
     img_resized = tf.image.resize(img, [224, 224])     
     img_ready_exp = tf.expand_dims(img_resized, axis=0)      
     img_ready = preprocess_input(img_ready_exp)  
-    return img_ready
+    return img_ready 
+
+
+
+# if __name__ == "__main__":
+#     uvicorn.run(
+#         "service:app",      
+#         host="0.0.0.0",   
+#         port=8000,
+#         reload=True       
+#     )
