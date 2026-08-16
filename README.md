@@ -122,5 +122,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### **Note:**
 
 No alien or spoofed face will get past my detectors! 😉
-
----
